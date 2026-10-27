@@ -1,115 +1,173 @@
-// Quiz content, personality types and love languages.
-
-// "mbti-a" questions decide E/I and S/N (each option is a combo like "EN").
-// "mbti-b" questions decide T/F and J/P (each option is a combo like "FP").
-// Three questions of each kind means every letter pair gets exactly 3 votes, so there are no ties.
-// "love" questions each add a point to one love language.
+// Quiz content: questions, connection categories, personality types and love languages.
+//
+// Every question feeds more than one result:
+// - "personality-a" questions decide E/I and S/N (letters like "EN") and also vote for a connection category.
+// - "personality-b" questions decide T/F and J/P (letters like "FP") and also vote for a love language.
+//   With three of each, every letter pair gets exactly 3 votes, so the type never ties.
+// - "category" and "love" questions ask directly, so their answers count double.
 const QUESTIONS = [
   {
-    kind: "mbti-a",
-    text: "Your ideal Friday night looks like…",
+    kind: "personality-a",
+    text: "It's Saturday and you've got free time with friends. You'd pick…",
     options: [
-      { key: "ES", text: "Out with a big group trying the new food spot everyone's talking about 🌮" },
-      { key: "EN", text: "A party where you end up in a 2am conversation about the universe 🌌" },
-      { key: "IS", text: "A cozy night in with your comfort show and favourite snacks 🍿" },
-      { key: "IN", text: "Headphones on, notebook out, building a whole world in your head 🎧" },
+      { letters: "ES", cat: "sports", text: "A pickup game or a match at the stadium" },
+      { letters: "EN", cat: "music", text: "A live concert or a festival" },
+      { letters: "IS", cat: "food", text: "Cooking a big meal together at home" },
+      { letters: "IN", cat: "movies", text: "A movie marathon, then picking apart the plot" },
     ],
   },
   {
-    kind: "mbti-b",
-    text: "A friend comes to you upset. You…",
+    kind: "personality-b",
+    text: "A friend is going through a hard time. You…",
     options: [
-      { key: "TJ", text: "Help them make a clear plan to fix the problem 📝" },
-      { key: "TP", text: "Ask questions until you figure out what really went wrong 🔍" },
-      { key: "FJ", text: "Check in on them every day until they feel better 🫶" },
-      { key: "FP", text: "Listen, validate, and maybe cry with them a little 🥺" },
+      { letters: "TJ", love: "acts", text: "Help them make a plan to fix it" },
+      { letters: "TP", love: "time", text: "Take them out to do something fun to get their mind off it" },
+      { letters: "FJ", love: "words", text: "Send them encouraging messages every day" },
+      { letters: "FP", love: "touch", text: "Go straight over and give them the biggest hug" },
+    ],
+  },
+  {
+    kind: "category",
+    text: "What would make you click with a stranger instantly?",
+    options: [
+      { cat: "music", text: "You have the same favourite artist 🎵" },
+      { cat: "sports", text: "You support the same team ⚽" },
+      { cat: "food", text: "You're both obsessed with the same food spot 🍜" },
+      { cat: "gaming", text: "You play the same game 🎮" },
+      { cat: "movies", text: "You have the same comfort show or movie 🎬" },
+      { cat: "books", text: "You love the same book series 📚" },
+      { cat: "art", text: "You both draw, take photos or make things 🎨" },
+      { cat: "nature", text: "You both love hiking, camping or the beach 🏕️" },
     ],
   },
   {
     kind: "love",
     text: "After a rough week, what would make you feel most cared for?",
     options: [
-      { key: "words", text: "A heartfelt message saying how proud they are of you 💬" },
-      { key: "acts", text: "Someone quietly taking care of your chores 🧺" },
-      { key: "touch", text: "A long, tight hug 🤗" },
-      { key: "gifts", text: "A little surprise treat that made them think of you 🎁" },
-      { key: "time", text: "A whole evening together, phones away 🕯️" },
+      { love: "words", text: "A message saying how proud they are of you" },
+      { love: "acts", text: "Someone quietly taking care of your chores" },
+      { love: "touch", text: "A long, tight hug" },
+      { love: "gifts", text: "A small surprise that made them think of you" },
+      { love: "time", text: "A whole evening together, phones away" },
     ],
   },
   {
-    kind: "mbti-a",
-    text: "You walk into a room full of strangers. You…",
+    kind: "personality-a",
+    text: "You're at a party where you only know the host. You…",
     options: [
-      { key: "ES", text: "Introduce yourself and ask what everyone's up to 👋" },
-      { key: "EN", text: "Start a fun 'what if' conversation with whoever's nearest 💭" },
-      { key: "IS", text: "Find the snack table and read the room first 🧃" },
-      { key: "IN", text: "Quietly imagine the life stories of everyone there 📖" },
+      { letters: "ES", cat: "gaming", text: "Jump into whatever game is going on" },
+      { letters: "EN", cat: "music", text: "Take over the music and get people singing" },
+      { letters: "IS", cat: "food", text: "Help out in the kitchen, it's easier to chat there" },
+      { letters: "IN", cat: "books", text: "Find the one person who's read the same book as you" },
     ],
   },
   {
-    kind: "mbti-b",
-    text: "How do you handle a big project?",
+    kind: "personality-b",
+    text: "It's your best friend's birthday. You…",
     options: [
-      { key: "TJ", text: "Schedule, milestones, colour-coded spreadsheet ✅" },
-      { key: "TP", text: "Find the smartest shortcut, then improvise the rest ⚙️" },
-      { key: "FJ", text: "Make sure everyone on the team is happy and on track 🤝" },
-      { key: "FP", text: "Wait for inspiration, then make something meaningful at 3am 🌙" },
+      { letters: "TJ", love: "acts", text: "Organise everything: the place, the guest list, the timing" },
+      { letters: "TP", love: "time", text: "Plan a spontaneous day out they'll never forget" },
+      { letters: "FJ", love: "words", text: "Write a heartfelt card or give a speech" },
+      { letters: "FP", love: "gifts", text: "Hunt down the perfect, personal gift" },
     ],
   },
   {
-    kind: "love",
-    text: "Your dream birthday would be…",
+    kind: "category",
+    text: "Your perfect hangout with a new friend:",
     options: [
-      { key: "words", text: "Cards and messages telling you what you mean to everyone 💌" },
-      { key: "time", text: "A whole day with your favourite people, no distractions 🗓️" },
-      { key: "gifts", text: "A thoughtful present they clearly planned for months 🎀" },
-      { key: "acts", text: "Someone else planning everything so you can just relax 🧁" },
-      { key: "touch", text: "Lots of hugs, then cuddling up for a movie 🤍" },
+      { cat: "music", text: "Making a playlist together or going to a gig" },
+      { cat: "sports", text: "Shooting hoops, a gym session or watching the big game" },
+      { cat: "food", text: "Trying a new restaurant or baking together" },
+      { cat: "gaming", text: "Gaming all night, co-op or competitive" },
+      { cat: "movies", text: "Movie night with running commentary" },
+      { cat: "books", text: "A bookshop trip, then coffee and a long talk" },
+      { cat: "art", text: "A pottery or painting class" },
+      { cat: "nature", text: "A sunrise hike or a day at the lake" },
     ],
   },
   {
-    kind: "mbti-a",
-    text: "Pick a vacation:",
+    kind: "personality-a",
+    text: "Pick a trip:",
     options: [
-      { key: "ES", text: "A beach resort with music, activities and new friends 🏖️" },
-      { key: "EN", text: "Backpacking with no fixed plan and a group of strangers 🎒" },
-      { key: "IS", text: "A familiar cabin you love, with a good book 🏡" },
-      { key: "IN", text: "A misty village with old bookshops and secret paths 🌫️" },
-    ],
-  },
-  {
-    kind: "mbti-b",
-    text: "Which compliment would mean the most?",
-    options: [
-      { key: "TJ", text: "\"You're so reliable, you always get things done.\"" },
-      { key: "TP", text: "\"You're brilliant, you notice things nobody else does.\"" },
-      { key: "FJ", text: "\"You make everyone around you feel looked after.\"" },
-      { key: "FP", text: "\"You're so genuine, there's nobody else like you.\"" },
+      { letters: "ES", cat: "sports", text: "A surf or ski trip with lessons and new people" },
+      { letters: "EN", cat: "nature", text: "Backpacking somewhere new with no fixed plan" },
+      { letters: "IS", cat: "gaming", text: "A cozy cabin with board games and a console" },
+      { letters: "IN", cat: "art", text: "A quiet seaside town with a sketchbook and a camera" },
     ],
   },
   {
     kind: "love",
-    text: "What hurts the most in a relationship?",
+    text: "How do you usually show people you care?",
     options: [
-      { key: "words", text: "Harsh words, or never hearing \"I appreciate you\"" },
-      { key: "time", text: "Cancelled plans, or being half-listened to" },
-      { key: "gifts", text: "A forgotten birthday or anniversary" },
-      { key: "acts", text: "Them not helping when you're clearly overwhelmed" },
-      { key: "touch", text: "Feeling physically distant, with no hugs or hand-holding" },
+      { love: "words", text: "Long texts and hyping them up" },
+      { love: "time", text: "Making plans and being fully present" },
+      { love: "gifts", text: "Picking up little things that remind you of them" },
+      { love: "acts", text: "Doing favours without being asked" },
+      { love: "touch", text: "Hugs, high fives, leaning on their shoulder" },
     ],
   },
   {
-    kind: "love",
-    text: "How do you usually show love to others?",
+    kind: "personality-b",
+    text: "Which compliment would mean the most to you?",
     options: [
-      { key: "words", text: "Long texts and hyping them up 📣" },
-      { key: "time", text: "Making plans and being fully present 📅" },
-      { key: "gifts", text: "Picking up little things that remind you of them 🛍️" },
-      { key: "acts", text: "Doing favours without being asked 🛠️" },
-      { key: "touch", text: "Hugs, high fives, leaning on their shoulder 🫂" },
+      { letters: "TJ", text: "\"You're so reliable, you always get things done.\"" },
+      { letters: "TP", text: "\"You're so smart, you notice things nobody else does.\"" },
+      { letters: "FJ", text: "\"You make everyone around you feel looked after.\"" },
+      { letters: "FP", text: "\"You're so genuine, there's nobody else like you.\"" },
     ],
   },
 ];
+
+const CATEGORIES = {
+  music: {
+    name: "Music", emoji: "🎵",
+    desc: "Songs are how you connect. Sharing a playlist, singing along at a concert or finding someone with the same taste instantly makes them feel like your people.",
+    meet: ["Go to local gigs and open mic nights", "Join a choir, band or music club", "Share playlists and ask for recommendations"],
+    starters: ["What song have you had on repeat lately?", "What was the best concert you've ever been to?"],
+  },
+  sports: {
+    name: "Sports & Fitness", emoji: "⚽",
+    desc: "You bond through movement and team spirit. Playing together, cheering for the same team or training side by side builds your strongest friendships.",
+    meet: ["Join a rec league or run club", "Watch games at a sports bar or with friends", "Try a group fitness or climbing class"],
+    starters: ["Who's your team, and how long have you supported them?", "What sport would you try if you could be instantly good at it?"],
+  },
+  food: {
+    name: "Food & Cooking", emoji: "🍜",
+    desc: "For you, sharing a meal is sharing a moment. You connect over new restaurants, family recipes and cooking for the people you care about.",
+    meet: ["Take a cooking class", "Host a potluck or dinner night", "Explore food markets with friends"],
+    starters: ["What's the best thing you've ever eaten?", "What's a dish from home you could eat every day?"],
+  },
+  gaming: {
+    name: "Gaming", emoji: "🎮",
+    desc: "You connect through play, whether that's a co-op mission, a heated board game night or swapping tips on your favourite game.",
+    meet: ["Join a gaming Discord or local game night", "Go to board game cafés", "Team up in online co-op games"],
+    starters: ["What game could you replay forever?", "Co-op or competitive, which are you?"],
+  },
+  movies: {
+    name: "Movies & TV", emoji: "🎬",
+    desc: "Stories on screen are your shared language. Quoting the same show, binge-watching together and debating endings is how you get close.",
+    meet: ["Host watch parties", "Join a film club or go to indie cinema nights", "Talk about shows in fan communities"],
+    starters: ["What's your ultimate comfort show?", "Which movie ending would you change?"],
+  },
+  books: {
+    name: "Books & Stories", emoji: "📚",
+    desc: "You connect through ideas and stories. Finding someone who loves the same book or will talk for hours about a character means a lot to you.",
+    meet: ["Join a book club", "Go to author events and bookshop nights", "Share what you're reading online"],
+    starters: ["What book do you wish you could read again for the first time?", "Which fictional character are you most like?"],
+  },
+  art: {
+    name: "Art & Creativity", emoji: "🎨",
+    desc: "Making things is how you connect. Drawing, photography, crafts or design: creating side by side with someone builds a special kind of bond.",
+    meet: ["Take a pottery, painting or photography class", "Go to gallery openings and craft markets", "Join a creative community or zine club"],
+    starters: ["What's something you've made that you're proud of?", "If you had a free week to create anything, what would it be?"],
+  },
+  nature: {
+    name: "Nature & Adventure", emoji: "🏕️",
+    desc: "You feel closest to people outdoors. Hikes, road trips, camping and exploring new places are where your best memories with others happen.",
+    meet: ["Join a hiking or outdoors group", "Plan day trips with friends", "Volunteer at parks or clean-up events"],
+    starters: ["What's the most beautiful place you've ever been?", "Mountains or beach?"],
+  },
+};
 
 const AXES = [
   { left: "E", right: "I", leftName: "Extraverted", rightName: "Introverted" },

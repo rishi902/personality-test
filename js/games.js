@@ -1,4 +1,4 @@
-// Mini games: memory match, daydream generator, type compatibility.
+// Mini games: memory match, hangout idea generator, type compatibility.
 
 // ---------- Tabs ----------
 
@@ -11,8 +11,8 @@ document.querySelectorAll(".tab").forEach((tab) => {
 
 // ---------- Memory Match ----------
 
-const MEM_EMOJIS = ["💌", "🎁", "🤗", "🕯️", "🧺", "🌙", "🦋", "🌸"];
-const MEM_BEST_KEY = "soulprint:memory-best";
+const MEM_EMOJIS = Object.values(CATEGORIES).map((c) => c.emoji);
+const MEM_BEST_KEY = "kindred:memory-best";
 
 const mem = { flipped: [], matched: 0, moves: 0, seconds: 0, timer: null, locked: false };
 
@@ -89,35 +89,35 @@ function memWin() {
 $("#mem-reset").addEventListener("click", memReset);
 memReset();
 
-// ---------- Daydream Generator ----------
+// ---------- Hangout Idea Generator ----------
 
 const DREAM = {
   openers: [
-    "You wake up in", "You wander into", "You find a hidden door leading to",
-    "You fall asleep on a train and arrive at", "You follow a glowing moth into",
-    "A letter with no return address invites you to",
+    "Grab a friend and", "Invite a few people to", "This weekend,", "Text the group chat:",
+    "Pick someone you want to know better and",
   ],
-  places: [
-    "a library where every book is about someone you've loved",
-    "a café that only opens when it rains",
-    "a floating island covered in sleepy cats",
-    "a forest where the trees hum old songs",
-    "a tiny seaside town where it's always golden hour",
-    "a lighthouse that shines memories instead of light",
-    "a greenhouse growing flowers made of starlight",
+  activities: [
+    "make a shared playlist, then listen to it on a long drive",
+    "cook a dish neither of you has ever tried",
+    "have a board game tournament",
+    "watch a movie you both pick at random",
+    "go on a sunrise walk somewhere new",
+    "swap favourite books and meet up to talk about them",
+    "try a beginner class in something none of you can do",
+    "play a pickup game at the local park",
+    "visit a market and each buy the weirdest snack you can find",
   ],
   twists: [
-    "and a fox in a knitted scarf offers you tea.",
-    "and you realise you can understand what the wind is saying.",
-    "and your favourite fictional character is waiting, saying 'finally, you're here'.",
-    "and every step you take leaves a trail of tiny wildflowers.",
-    "and someone hands you a map to the place you've always felt homesick for.",
-    "and the moon asks if you'd like to swap places for one night.",
-    "and you find a journal written in your handwriting, from a life you haven't lived yet.",
+    "No phones allowed.",
+    "Loser picks the next plan.",
+    "Everyone has to bring one thing to share.",
+    "Take one photo each and compare at the end.",
+    "Budget: whatever's in your pocket.",
+    "Finish with dessert somewhere you've never been.",
   ],
 };
 
-const DREAM_KEY = "soulprint:dreams";
+const DREAM_KEY = "kindred:hangouts";
 let currentDream = "";
 
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -138,7 +138,7 @@ function renderDreams() {
 }
 
 $("#dream-btn").addEventListener("click", () => {
-  currentDream = `${pick(DREAM.openers)} ${pick(DREAM.places)}, ${pick(DREAM.twists)}`;
+  currentDream = `${pick(DREAM.openers)} ${pick(DREAM.activities)}. ${pick(DREAM.twists)}`;
   $("#dream-text").textContent = currentDream;
 });
 
@@ -170,11 +170,11 @@ function compatScore(a, b) {
 function compatBlurb(score, a, b) {
   const na = TYPES[a].name;
   const nb = TYPES[b].name;
-  if (a === b) return `Two of ${na}? You'll understand each other perfectly. Just remember to bring different snacks.`;
-  if (score >= 88) return `${na} + ${nb} is a dreamy match! You balance each other out and bring out each other's best sides. ✨`;
+  if (a === b) return `Two of ${na}? You'll understand each other perfectly.`;
+  if (score >= 88) return `${na} + ${nb} is a great match. You balance each other out and bring out each other's best sides.`;
   if (score >= 76) return `${na} and ${nb} make a lovely pair, with plenty in common and just enough difference to keep things interesting.`;
   if (score >= 66) return `${na} and ${nb} can be great together with a little patience. You'll teach each other a lot.`;
-  return `${na} and ${nb} see the world very differently, which can be exciting! Communication is your superpower here.`;
+  return `${na} and ${nb} see the world very differently, which can be exciting. Good communication goes a long way here.`;
 }
 
 function fillTypeSelect(sel, value) {
