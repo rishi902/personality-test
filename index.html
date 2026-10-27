@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Soulprint · Personality & Love Language Quiz</title>
+  <meta name="description" content="Find your personality type and love language in just 10 questions, then play mini games made for your type.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌙</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="sky" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <button class="brand" data-go="home">🌙 Soulprint</button>
+    <nav>
+      <button class="nav-link" data-go="quiz">Quiz</button>
+      <button class="nav-link" data-go="games">Games</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="view-home" class="view active">
+      <div class="hero card">
+        <p class="eyebrow">10 questions · about 2 minutes</p>
+        <h1>Who are you, <em>really?</em></h1>
+        <p class="lead">Find out your personality type and your love language, then play some mini games made for dreamers.</p>
+        <div class="hero-actions">
+          <button class="btn primary" data-go="quiz">Start the quiz ✨</button>
+          <button class="btn ghost" data-go="games">Just play games 🎮</button>
+        </div>
+        <div id="last-result" class="last-result" hidden></div>
+      </div>
+      <div class="feature-grid">
+        <div class="card feature"><span class="feature-icon">🧠</span><h3>Your type</h3><p>One of 16 personality types, built from four everyday choices.</p></div>
+        <div class="card feature"><span class="feature-icon">💌</span><h3>Your love language</h3><p>How you most like to give and receive love.</p></div>
+        <div class="card feature"><span class="feature-icon">🦋</span><h3>Fun games</h3><p>Memory match, a daydream generator and a type compatibility check.</p></div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section id="view-quiz" class="view">
+      <div class="card quiz-card">
+        <div class="progress-row">
+          <button class="btn small ghost" id="quiz-back">← Back</button>
+          <span id="quiz-count" class="muted">1 / 10</span>
+        </div>
+        <div class="progress"><div id="quiz-bar" class="progress-fill"></div></div>
+        <p id="quiz-kind" class="eyebrow"></p>
+        <h2 id="quiz-question"></h2>
+        <div id="quiz-options" class="options"></div>
+      </div>
+    </section>
+
+    <!-- RESULT -->
+    <section id="view-result" class="view">
+      <div class="card result-hero">
+        <p class="eyebrow">Your personality type</p>
+        <div id="result-emoji" class="big-emoji"></div>
+        <h1 id="result-code" class="type-code"></h1>
+        <h2 id="result-name" class="type-name"></h2>
+        <p id="result-tagline" class="lead"></p>
+      </div>
+
+      <div class="result-grid">
+        <div class="card">
+          <h3>About you</h3>
+          <p id="result-desc"></p>
+          <h4>Superpowers</h4>
+          <ul id="result-strengths" class="chips"></ul>
+          <h4>In love</h4>
+          <p id="result-love-style"></p>
+          <p class="fun-fact"><strong>Fun fact:</strong> <span id="result-fact"></span></p>
+        </div>
+        <div class="card">
+          <h3>Your four letters</h3>
+          <div id="result-axes" class="axes"></div>
+        </div>
+      </div>
+
+      <div class="card love-card">
+        <p class="eyebrow">Your love language</p>
+        <div class="love-head">
+          <span id="love-emoji" class="big-emoji"></span>
+          <div>
+            <h2 id="love-name"></h2>
+            <p id="love-desc"></p>
+          </div>
+        </div>
+        <p class="tip"><strong>Tip for the people who love you:</strong> <span id="love-tip"></span></p>
+        <div id="love-bars" class="love-bars"></div>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn primary" id="share-btn">Share my result 💌</button>
+        <button class="btn" data-go="games">Play games 🎮</button>
+        <button class="btn ghost" id="retake-btn">Retake quiz</button>
+      </div>
+      <p id="share-status" class="muted center" role="status"></p>
+    </section>
+
+    <!-- GAMES -->
+    <section id="view-games" class="view">
+      <div class="games-intro">
+        <h1>Games for dreamers 🦋</h1>
+        <p class="lead">Little things to play with while you overthink your results.</p>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" role="tab" data-game="memory">💌 Memory Match</button>
+        <button class="tab" role="tab" data-game="daydream">🌙 Daydream Generator</button>
+        <button class="tab" role="tab" data-game="compat">💞 Type Compatibility</button>
+      </div>
+
+      <div id="game-memory" class="card game active">
+        <div class="game-head">
+          <h2>Love Language Memory Match</h2>
+          <div class="stats"><span>Moves: <b id="mem-moves">0</b></span><span>Time: <b id="mem-time">0s</b></span><span>Best: <b id="mem-best">–</b></span></div>
+        </div>
+        <div id="mem-grid" class="mem-grid"></div>
+        <p id="mem-msg" class="muted center" role="status"></p>
+        <div class="center"><button class="btn" id="mem-reset">Shuffle & restart</button></div>
+      </div>
+
+      <div id="game-daydream" class="card game">
+        <h2>Daydream Generator</h2>
+        <p class="muted">For when real life is a bit much. Press the button and drift off.</p>
+        <blockquote id="dream-text" class="dream">Press the button to start a daydream…</blockquote>
+        <div class="center">
+          <button class="btn primary" id="dream-btn">Dream something ✨</button>
+          <button class="btn ghost" id="dream-save">Save it 🌙</button>
+        </div>
+        <h4>Saved daydreams</h4>
+        <ul id="dream-list" class="dream-list"><li class="muted">Nothing saved yet.</li></ul>
+      </div>
+
+      <div id="game-compat" class="card game">
+        <h2>Type Compatibility</h2>
+        <p class="muted">Pick two types and find out how the vibes line up. Purely for fun!</p>
+        <div class="compat-row">
+          <select id="compat-a" aria-label="First type"></select>
+          <span class="heart">💞</span>
+          <select id="compat-b" aria-label="Second type"></select>
+        </div>
+        <div class="center"><button class="btn primary" id="compat-btn">Check the vibes</button></div>
+        <div id="compat-result" class="compat-result" hidden>
+          <div class="meter"><div id="compat-fill" class="meter-fill"></div></div>
+          <p class="compat-score"><span id="compat-score"></span>%</p>
+          <p id="compat-blurb"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer muted">Made with 🌙 for dreamers. Just for fun, not a clinical assessment.</footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/games.js"></script>
+</body>
+</html>
